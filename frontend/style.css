@@ -1,0 +1,242 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin:0;
+    background-color:#f8e1e7;
+}
+
+/* Header */
+header {
+    background-color:#8B4513;
+    color:white;
+     padding: 5px 0; 
+}
+
+.header-container {
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+   height:60px;
+}
+.header-container img {
+    width:auto;
+    height:60px;
+}
+
+.header-container nav a {
+    color:white;
+    margin:0 10px;
+    font-weight:bold;
+    text-decoration:none;
+    padding-bottom: 2px;
+}
+
+.header-container nav a:hover {
+    text-decoration:underline;
+}
+
+.title-section {
+    text-align:center;
+    padding:5px;
+    margin-bottom: 2px;
+}
+
+
+.title-section h1 {
+    margin: 5px 0;       /* Less gap */
+}
+
+.title-section .tagline {
+    margin-bottom:5px;
+    font-size:18px;
+}
+
+/* Top bar */
+.top-bar {
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    margin-bottom:20px;
+    margin-top:10px;
+}
+
+input[type="text"] {
+    padding:8px;
+    width:250px;
+    border-radius:5px;
+    border:1px solid #ccc;
+}
+
+/* Product Cards */
+.products {
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:20px;
+    padding:20px;
+}
+
+.product-card {
+    background:white;
+    border-radius:15px;
+    overflow:hidden;
+    width:200px;
+    box-shadow:0 4px 8px rgba(0,0,0,0.2);
+    transition:transform 0.2s;
+}
+
+.product-card:hover {
+    transform:scale(1.05);
+}
+
+.product-card img {
+    width:100%;
+    height:150px;
+    object-fit:cover;
+}
+
+.product-card-content {
+    padding:10px;
+    text-align:center;
+}
+
+.product-card-content h3 {
+    margin:10px 0 5px;
+    font-size:18px;
+    color:#8B4513;
+}
+
+.product-card-content p {
+    margin:0;
+    font-weight:bold;
+    color:#333;
+}
+
+.product-card-content button {
+    margin-top:8px;
+    padding:5px 10px;
+    background:#8B4513;
+    color:white;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+.product-card-content button:hover {
+    background:#A0522D;
+}
+
+/* Footer */
+footer {
+    text-align:center;
+    padding:20px;
+    background-color:#8B4513;
+    color:white;
+    margin-top:20px;
+}
+
+/* Admin Page */
+.admin-container {
+    background:#fff;
+    padding:40px 50px;
+    border-radius:10px;
+    box-shadow:0 0 15px rgba(0,0,0,0.2);
+    width:400px;
+    margin:50px auto;
+    text-align:center;
+}
+
+.admin-container h2 { color:#8B4513; margin-bottom:20px; }
+
+.admin-container input, .admin-container button {
+    width:100%;
+    padding:10px;
+    margin:10px 0;
+    border-radius:5px;
+    border:1px solid #ccc;
+    box-sizing:border-box;
+}
+
+.admin-container button {
+    background:#8B4513;
+    color:white;
+    border:none;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.admin-container button:hover {
+    background:#A0522D;
+}
+
+.product-list-admin {
+    margin-top:20px;
+}
+
+.product-card-admin {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:10px;
+    margin-bottom:10px;
+    border-radius:10px;
+    background:#f9f9f9;
+    box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+
+.product-card-admin img {
+    width:60px;
+    height:60px;
+    object-fit:cover;
+    border-radius:10px;
+}
+
+.delete-btn {
+    background:#d9534f;
+    color:white;
+    border:none;
+    padding:5px 10px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+.delete-btn:hover { background:#c9302c; }
+
+/* Login Page */
+.login-container {
+    background-color: #fff;
+    padding: 40px 50px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    text-align: center;
+    width: 300px;
+    margin:50px auto;
+}
+
+.login-container h2 { margin-bottom: 20px; color: #8B4513; }
+
+.login-container input, .login-container button {
+    width:200px;
+    padding:10px;
+    margin:10px 0;
+    border-radius:5px;
+    border:1px solid #ccc;
+}
+
+.login-container button {
+    background-color: #8B4513;
+    color:white;
+    border:none;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.login-container button:hover { background-color:#A0522D; }
+
+/* Cart Section */
+#cartList p {
+    background:#fff3e0;
+    padding:5px 10px;
+    border-radius:5px;
+    margin:5px 0;
+}

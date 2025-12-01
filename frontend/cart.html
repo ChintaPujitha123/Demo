@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cart - Chocolate Store</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <div class="header-container">
+        <img src="logo.png" alt="Logo">
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="cart.html">Cart </a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+            <a href="login.html">Admin</a>
+        </nav>
+    </div>
+    <div class="title-section">
+        <h1>My Cart</h1>
+    </div>
+</header>
+
+<section class="cart" id="cartList"></section>
+
+<footer style="margin-top:300px;">
+    <p>© 2025 Sweet Cocoa Corner. Crafted with ❤️</p>
+</footer>
+
+<script src="script.js"></script>
+<script src="script.js"></script>
+<script>
+// Load cart using API
+async function loadCart() {
+    const cartList = document.getElementById("cartList");
+
+    const res = await fetch("http://localhost:3000/api/cart");
+    const cart = await res.json();
+
+    cartList.innerHTML = "";
+
+    if (cart.length === 0) {
+        cartList.innerHTML = "<p style='text-align:center;font-size:20px;'>Your cart is empty!</p>";
+        return;
+    }
+
+    cart.forEach(item => {
+        const div = document.createElement("div");
+        div.className = "product-card";
+
+        div.innerHTML = `
+            <img src="${item.img}">
+            <div class="product-card-content">
+                <h3>${item.name}</h3>
+                <p>${item.price} × ${item.quantity}</p>
+                <button onclick="removeFromCart(${item.chocolate_id})">Remove</button>
+
+            </div>
+        `;
+
+        cartList.appendChild(div);
+    });
+}
+
+async function removeFromCart(chocoId) {
+
+    // 1. Get all cart items
+    const res = await fetch(`${API_BASE}/cart`);
+    const cart = await res.json();
+
+    // 2. Find the row that matches chocolate id
+    const item = cart.find(c => c.chocolate_id === chocoId);
+
+    if (!item) {
+        alert("Item not found!");
+        return;
+    }
+
+    // 3. Delete that row using its cart_id
+    await fetch(`${API_BASE}/cart/${item.cart_id}`, {
+        method: "DELETE"
+    });
+
+    alert("Removed!");
+
+    // 4. Reload pages
+    loadCart();
+    updateCartCount();
+    loadChocolates();
+}
+
+// Auto load
+window.onload = loadCart;
+</script>
+
+</body>
+</html>

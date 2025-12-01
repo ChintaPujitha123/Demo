@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chocolate Store</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <div class="header-container">
+        <img src="logo.png" alt="Logo">
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+            <a href="login.html">Admin</a>
+            <a href="cart.html">Cart</a>
+        </nav>
+    </div>
+    <div class="title-section">
+        <h1>Choco Hub</h1>
+        <p class="tagline">Where every bite tells a story</p>
+    </div>
+</header>
+
+<div class="top-bar">
+    <input type="text" id="searchInput" placeholder="Search chocolates..." onkeyup="searchChocolates()">
+</div>
+
+<section class="products" id="productList"></section>
+
+
+<footer>
+    <p>© 2025 Sweet Cocoa Corner. Crafted with ❤️</p>
+</footer>
+
+<script src="script.js"></script>
+<script>
+// Load chocolates on index page
+window.onload = loadChocolates;
+</script>
+</body>
+</html>

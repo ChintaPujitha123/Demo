@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Admin - Chocolate Store</title>
+<link rel="stylesheet" href="style.css"/>
+
+<style>
+.admin-container {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.product-card-admin {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 8px;
+}
+
+.product-card-admin img {
+    width: 70px;
+    height: 70px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.form-row {
+    display: flex;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+.preview img {
+    width: 90px;
+    height: 90px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="header-container">
+    <img src="logo.png" alt="Logo" style="height:60px;">
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="login.html">Admin</a>
+      <a href="cart.html">Cart</a>
+    </nav>
+  </div>
+  <div class="title-section">
+    <h1>Admin Panel</h1>
+  </div>
+</header>
+
+<div class="admin-container">
+
+  <h2>Add Chocolate</h2>
+
+  <form id="adminForm">
+
+    <div class="form-row">
+      <input type="text" id="chocoName" placeholder="Chocolate Name" required>
+      <input type="text" id="chocoPrice" placeholder="Price (₹)" required>
+    </div>
+
+    <div class="form-row">
+      <label>
+        Select Image:
+        <select id="imageSelect">
+          <option value="">-- Select Image --</option>
+          <option value="images/chocolate1.jpg">milk.jpg</option>
+          <option value="images/chocolate2.jpg">dark.jpg</option>
+          <option value="images/chocolate3.jpg">white.jpg</option>
+          <option value="images/chocolate4.jpg">hazelnut.jpg</option>
+          <option value="images/chocolate5.jpg">caramel.jpg</option>
+          <option value="images/chocolate6.jpg">almond.jpg</option>
+          <option value="images/chocolate7.jpg">mint.jpg</option>
+          <option value="images/chocolate8.jpg">strawberry.jpg</option>
+          <option value="images/chocolate9.jpg">orange.jpg</option>
+          <option value="images/chocolate10.jpg">coffee.jpg</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="form-row">
+      <label>
+        Or Upload Image:
+        <input type="file" id="fileInput" accept="image/*">
+      </label>
+    </div>
+
+    <input type="hidden" id="chocoImg">
+
+    <div class="preview" id="imgPreview" style="display:none;">
+      <strong>Preview:</strong>
+      <img id="previewImg" src="">
+    </div>
+
+    <button type="submit">Add Chocolate</button>
+
+  </form>
+
+  <h3 style="margin-top: 20px;">Existing Chocolates</h3>
+  <div id="productList"></div>
+
+</div>
+
+<script>
+const API = "http://localhost:3000/api";
+const adminForm = document.getElementById("adminForm");
+
+const chocoName = document.getElementById("chocoName");
+const chocoPrice = document.getElementById("chocoPrice");
+const chocoImg = document.getElementById("chocoImg");
+
+const imgPreview = document.getElementById("imgPreview");
+const previewImg = document.getElementById("previewImg");
+
+const productList = document.getElementById("productList");
+const imageSelect = document.getElementById("imageSelect");
+const fileInput = document.getElementById("fileInput");
+
+
+// --- IMAGE PREVIEW (UPLOAD) ---
+// Select image from dropdown
+imageSelect.addEventListener("change", () => {
+    if(imageSelect.value) {
+        chocoImg.value = imageSelect.value; // only short URL
+        previewImg.src = imageSelect.value;
+        imgPreview.style.display = "block";
+    }
+});
+
+// Preview uploaded file (do NOT save Base64 in DB)
+fileInput.addEventListener("change", () => {
+    const file = fileInput.files[0];
+    if (!file) return;
+
+    previewImg.src = URL.createObjectURL(file);
+    imgPreview.style.display = "block";
+
+    // For now, just alert user to manually upload file to /images/
+    chocoImg.value = "images/" + file.name; 
+});
+
+
+// --- ADD CHOCOLATE ---
+adminForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const name = chocoName.value.trim();
+    const price = chocoPrice.value.trim();
+    const img = chocoImg.value.trim();
+
+    if(!name || !price || !img) {
+        alert("Please fill all fields!");
+        return;
+    }
+
+    // POST data
+    const res = await fetch(`${API}/add-chocolate`, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({name, price, img})
+    });
+
+    const data = await res.json();
+
+    if(res.ok) {
+        alert("Chocolate added successfully 🍫✨");
+        chocoName.value = "";
+        chocoPrice.value = "";
+        chocoImg.value = "";
+        imgPreview.style.display = "none";
+        imageSelect.value = "";
+        loadChocolates();
+    } else {
+        alert("Failed to add chocolate!");
+        console.log(data);
+    }
+});
+
+
+
+// --- LOAD EXISTING CHOCOLATES ---
+async function loadChocolates() {
+    try {
+        const res = await fetch(`${API}/chocolates`);
+        const chocolates = await res.json();
+
+        productList.innerHTML = chocolates.map(c => `
+            <div class="product-card-admin">
+                <img src="${c.img}">
+                <div>
+                    <strong>${c.name}</strong><br>
+                    <span>${c.price}</span>
+                </div>
+            </div>
+        `).join("");
+
+    } catch (err) {
+        productList.innerHTML = "<p>Error loading chocolates.</p>";
+    }
+}
+
+fileInput.addEventListener("change", () => {
+    const file = fileInput.files[0];
+    if (!file) return;
+
+    // Preview only
+    const reader = new FileReader();
+    reader.onload = e => {
+        previewImg.src = e.target.result;
+        imgPreview.style.display = "block";
+    };
+    reader.readAsDataURL(file);
+
+    // Do NOT assign Base64 to chocoImg.value
+});
+
+// Load when page opens
+loadChocolates();
+</script>
+
+</body>
+</html>
