@@ -13,7 +13,7 @@
         <img src="logo.png" alt="Logo">
         <nav>
             <a href="index.html">Home</a>
-            <a href="cart.html">Cart </a>
+            <a href="cart.html">Cart</a>
             <a href="about.html">About</a>
             <a href="contact.html">Contact</a>
             <a href="login.html">Admin</a>
@@ -31,13 +31,15 @@
 </footer>
 
 <script src="script.js"></script>
-<script src="script.js"></script>
 <script>
+// Make sure API_BASE is defined
+const API_BASE = "http://localhost:3000/api";
+
 // Load cart using API
 async function loadCart() {
     const cartList = document.getElementById("cartList");
 
-    const res = await fetch("http://localhost:3000/api/cart");
+    const res = await fetch(`${API_BASE}/cart`);
     const cart = await res.json();
 
     cartList.innerHTML = "";
@@ -57,7 +59,6 @@ async function loadCart() {
                 <h3>${item.name}</h3>
                 <p>${item.price} × ${item.quantity}</p>
                 <button onclick="removeFromCart(${item.chocolate_id})">Remove</button>
-
             </div>
         `;
 
@@ -66,7 +67,6 @@ async function loadCart() {
 }
 
 async function removeFromCart(chocoId) {
-
     // 1. Get all cart items
     const res = await fetch(`${API_BASE}/cart`);
     const cart = await res.json();
